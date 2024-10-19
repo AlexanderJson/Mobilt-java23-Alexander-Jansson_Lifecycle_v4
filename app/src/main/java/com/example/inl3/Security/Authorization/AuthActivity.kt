@@ -1,4 +1,4 @@
-package com.example.inl3.Authorization
+package com.example.inl3.Security.Authorization
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
