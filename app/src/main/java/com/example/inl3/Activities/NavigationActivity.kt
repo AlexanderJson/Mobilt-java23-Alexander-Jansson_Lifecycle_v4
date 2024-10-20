@@ -9,7 +9,7 @@ import com.example.inl3.Fragments.ProfileFragment
 import com.example.inl3.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class NavigationActivity : AppCompatActivity() {
+open class NavigationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,7 @@ class NavigationActivity : AppCompatActivity() {
                     true
                 }
                 R.id.logout -> {
-                    loadFragment(LogoutFragment())
+                   // loadFragment(LogoutFragment())
                     true
                 }
                 else -> false
