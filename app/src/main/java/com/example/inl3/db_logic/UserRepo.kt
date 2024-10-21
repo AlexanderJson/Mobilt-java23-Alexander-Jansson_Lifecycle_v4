@@ -71,6 +71,7 @@ class UserRepo(private val context: Context) {
 
 
 
+
     fun updateUser(username: String, password: String, firstName: String, lastName: String, email: String): Boolean{
 
         val file = File("database.txt")
@@ -88,6 +89,9 @@ class UserRepo(private val context: Context) {
 
         return true
     }
+
+
+
 
     fun getUser(): User? {
         // hämtar username input, söker databasen efter username
