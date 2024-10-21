@@ -6,21 +6,42 @@ import java.io.IOException
 
 class UserRepo(private val context: Context) {
 
+    fun getUser(username: String?): User? {
 
-    fun addUser(username: String, password: String, firstName: String, lastName: String, email: String): Boolean{
-        val file = File("database.txt")
-        if(findByUsername(username,password) != null) {
-            return false
-        }
+        try {
+            val assetManager = context.assets
+            val inputStream = assetManager.open("database")
+            val lines = inputStream.bufferedReader().use { it.readLines() }
 
-        try{
-            file.appendText("u: $username / p: $password / fn: $firstName / ln: $lastName / e: $email\n")
-            return true
-        }catch (e: IOException){
+            val regex = Regex("u: (.+?) / p: (.+?) / fn: (.+?) / ln: (.+?) / e: (.+)")
+            for (line in lines) {
+                val matchResult = regex.find(line)
+                if (matchResult != null) {
+                    val (storedUsername, storedPassword, storedfName, storedlName, storedEmail) = matchResult.destructured
+                    if (storedUsername == username) {
+                        return User(
+                            storedUsername,
+                            storedPassword,
+                            storedfName,
+                            storedlName,
+                            storedEmail
+                        )
+                    }
+                }
+            }
+        } catch (e: IOException) {
             e.printStackTrace()
-            return false
         }
+        return null
     }
+
+    fun saveUser(username: String){
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("username", username)
+        editor.apply()
+    }
+
 
     fun findByUsername(username: String, password: String): User?{
        try{
@@ -46,6 +67,30 @@ class UserRepo(private val context: Context) {
             return null
         }
     }
+
+
+fun addUser(username: String, password: String, firstName: String, lastName: String, email: String): Boolean{
+    /*
+    val file = File("database.txt")
+
+    if(findByUsername(username,password) != null) {
+        return false
+    }
+
+    try{
+        file.appendText("u: $username / p: $password / fn: $firstName / ln: $lastName / e: $email\n")
+        return true
+    }catch (e: IOException){
+        e.printStackTrace()
+        return false
+    }
+
+     */
+    return false
+}
+
+
+
 
 
     fun checkAuth(username: String, password: String): Boolean{
@@ -74,69 +119,12 @@ class UserRepo(private val context: Context) {
 
     fun updateUser(username: String, password: String, firstName: String, lastName: String, email: String): Boolean{
 
-        val file = File("database.txt")
 
-        if(file.exists()){
-            val lines = file.readLines()
-            val regex = Regex("u: (.+?) / p: (.+?) / fn: (.+?) / ln: (.+?) / e: (.+)")
-            val updatedLines = mutableListOf<String>()
-
-            val currentUsername = getUser()?.username //shared prefs
-            val currentPassword = getUser()?.password //shared prefs
-
-            if (currentUsername != null && currentPassword != null) {}
-        }
 
         return true
     }
 
 
-
-
-    fun getUser(): User? {
-        // hämtar username input, söker databasen efter username
-        val file = File("database.txt")
-
-        // vid inlogg sparas navändar detalj på sharedPrefs för
-        // att hämta alla andra
-
-        val username = ("shared prefs")
-        val password = ("shared prefs")
-
-        if (file.exists()){
-            val lines = file.readLines()
-                val regex = Regex("u: (.+?) / p: (.+)")
-                for (line in lines){
-                    val matchResult = regex.find(line)
-                    if (matchResult != null) {
-                        val (storedUsername, storedPassword, storedfName, storedlName, storedEmail) = matchResult.destructured
-                        if (storedUsername == username && storedPassword == password) {
-                            return User(storedUsername, storedPassword, storedfName, storedlName, storedEmail)
-                        }
-                    }
-                }
-            }
-
-        // logik för att söka db snabbt (id?)
-        return null
-    }
-
-
-
-
-
-    fun deleteUser(userToken: Int, user: User): Boolean{
-
-        // userToken skickas hit från input automatiskt (från sharedPrefs)
-        // om userToken i sharedPrefs matchar med hemlig
-        // nyckel i databasen uför följande:
-
-        // hämta current user data på inloggad session (sharedprefs)
-        // hitta user id efter user id
-        //tar bort user objekt
-
-        return true
-    }
 
 
 

@@ -9,25 +9,31 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.inl3.R
 import com.example.inl3.UserAdapter
 import com.example.inl3.db_logic.User
+import com.example.inl3.db_logic.UserService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProfileActivity : AppCompatActivity() {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var userServices: UserService
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_profile)
 
+        userServices = UserService(this)
+        val user = userServices.getUser()
 
 
-        val users = listOf(
-            User(username = "user1", password = "pass1", email = "email1", firstName = "first1", lastName = "last1"),
-        )
-
-        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        recyclerView.adapter = UserAdapter(users)
-
+        if (user != null) {
+            val userList = listOf(user)
+            val adapter = UserAdapter(userList)
+            recyclerView.adapter = adapter
+        }
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId){
