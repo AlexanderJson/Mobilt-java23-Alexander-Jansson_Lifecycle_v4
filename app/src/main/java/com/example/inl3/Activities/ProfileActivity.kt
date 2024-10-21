@@ -2,10 +2,14 @@ package com.example.inl3.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.FrameLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.inl3.Fragments.EditUserFragment
 import com.example.inl3.R
 import com.example.inl3.UserAdapter
 import com.example.inl3.db_logic.User
@@ -34,6 +38,13 @@ class ProfileActivity : AppCompatActivity() {
             val adapter = UserAdapter(userList)
             recyclerView.adapter = adapter
         }
+
+        val updateBtn = findViewById<Button>(R.id.updateBtn)
+        updateBtn.setOnClickListener {
+            showEditUserFragment()
+        }
+
+
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId){
@@ -49,5 +60,16 @@ class ProfileActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    private fun showEditUserFragment() {
+        val editUserFragment = EditUserFragment()
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, editUserFragment)
+            .addToBackStack(null)
+            .commit()
+
+        findViewById<FrameLayout>(R.id.fragment_container).visibility = View.VISIBLE
     }
 }

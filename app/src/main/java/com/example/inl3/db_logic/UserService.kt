@@ -9,8 +9,8 @@ class UserService( private val context : Context) {
     private val userRepo = UserRepo(context)
 
     fun authorizeUser(username: String, password: String): Boolean
-    {   val user = userRepo.findByUsername(username, password)
-        if (user != null) {
+    {   val user = userRepo.findByUsername(username)
+        if (user != null && user.password == password) {
             userRepo.saveUser(username)
 
 
@@ -35,19 +35,22 @@ class UserService( private val context : Context) {
             Log.d("UserService", "User details: Username = ${user.username}, Password = ${user.password}, First Name = ${user.firstName}, Last Name = ${user.lastName}, Email = ${user.email}")
         }
 
-        return userRepo.getUser(username)
+        return user
     }
 
 
     fun loginUser(){}
     fun logoutUser(){}
 
-    fun addUser(){
-
+    fun addUser(newUser:  User){
+        userRepo.addUser(newUser)
     }
 
 
-    fun updateUser(){}
+    fun updateUser(user: User){
+        println("SERVICE UPDATE STARTED")
+        userRepo.updateUser(user)
+    }
 
     fun deleteUser(){}
 

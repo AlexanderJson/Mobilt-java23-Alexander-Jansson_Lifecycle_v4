@@ -6,14 +6,76 @@ import java.io.IOException
 
 class UserRepo(private val context: Context) {
 
+
+fun updateUser(updatedUser: User): Boolean {
+    val file = File(context.filesDir, "database.txt")
+    println("REPOSITORY UPDATE STARTED")
+    println("User details to be updated: Username = ${updatedUser.username}, Password = ${updatedUser.password}, First Name = ${updatedUser.firstName}, Last Name = ${updatedUser.lastName}, Email = ${updatedUser.email}")
+
+    if (!file.exists()) {
+        println("File does not exist.")
+        return false
+    }
+
+    try {
+
+        val lines = file.readLines().toMutableList()
+        val regex = Regex("u: (.+?) / p: (.+?) / fn: (.+?) / ln: (.+?) / e: (.+)")
+        var updated = false
+        for (i in lines.indices) {
+            val match = regex.find(lines[i])
+            if (match != null) {
+                    lines[i] =
+                        "u: ${updatedUser.username} / p: ${updatedUser.password} / fn: ${updatedUser.firstName} / ln: ${updatedUser.lastName} / e: ${updatedUser.email}"
+                    updated = true
+                    break
+            }
+        }
+        if (updated) {
+            file.writeText(lines.joinToString("\n"))
+            println("User ${updatedUser.username} updated. Rewriting file.")
+            return true
+        }
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+    return false
+}
+
+
+
+
+    fun addUser(newUser: User): Boolean {
+
+        val file = File(context.filesDir, "database.txt")
+        try {
+
+            if (!file.exists()){
+                file.createNewFile()
+            }
+
+            val existingUser = findByUsername(newUser.username)
+            if (existingUser != null) {
+                println("User with username ${newUser.username} already exists! Not adding.")
+                return false
+            }
+            file.appendText("u: ${newUser.username} / p: ${newUser.password} / fn: ${newUser.firstName} / ln: ${newUser.lastName} / e: ${newUser.email}")
+            return true
+        }
+        catch(_: IOException){
+            return false
+        }
+    }
+
+
+
     fun getUser(username: String?): User? {
 
         try {
-            val assetManager = context.assets
-            val inputStream = assetManager.open("database")
-            val lines = inputStream.bufferedReader().use { it.readLines() }
+            val file = File(context.filesDir, "database.txt")
+            val lines = file.readLines()
 
-            val regex = Regex("u: (.+?) / p: (.+?) / fn: (.+?) / ln: (.+?) / e: (.+)")
+            val regex = Regex("u: (.+?) / p: (.+?) / fn: (.+?) / ln: (.+?) / e: (.+?)")
             for (line in lines) {
                 val matchResult = regex.find(line)
                 if (matchResult != null) {
@@ -26,6 +88,7 @@ class UserRepo(private val context: Context) {
                             storedlName,
                             storedEmail
                         )
+
                     }
                 }
             }
@@ -42,19 +105,39 @@ class UserRepo(private val context: Context) {
         editor.apply()
     }
 
+    fun checkAuth(username: String, password: String): Boolean{
+        val file = File(context.filesDir, "database.txt")
 
-    fun findByUsername(username: String, password: String): User?{
+        if (file.exists()){
+            val lines = file.readLines()
+            val regex = Regex("u: (.+?) / p: (.+)")
+            for (line in lines){
+                val matchResult = regex.find(line)
+                if (matchResult != null) {
+                    val (storedUsername, storedPassword, storedfName, storedlName, storedEmail) = matchResult.destructured
+                    if (storedUsername == username && storedPassword == password) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+
+
+    fun findByUsername(username: String): User?{
        try{
-           val assetManager = context.assets
-           val inputStream = assetManager.open("database")
-           val lines = inputStream.bufferedReader().use { it.readLines() }
+           val file = File(context.filesDir, "database.txt")
+           val lines = file.readLines()
 
            val regex = Regex("u: (.+?) / p: (.+?) / fn: (.+?) / ln: (.+?) / e: (.+)")
            for (line in lines) {
                val matchResult = regex.find(line)
                if (matchResult != null) {
                    val (storedUsername, storedPassword, storedfName, storedlName, storedEmail) = matchResult.destructured
-                   if (storedUsername == username && storedPassword == password) {
+                   println("Findby: Checking username: [$storedUsername] against [$username]")
+
+                   if (storedUsername == username) {
                        return User(storedUsername, storedPassword, storedfName, storedlName, storedEmail)
                    }
                }
@@ -93,36 +176,11 @@ fun addUser(username: String, password: String, firstName: String, lastName: Str
 
 
 
-    fun checkAuth(username: String, password: String): Boolean{
-        val file = File("database.txt")
-
-        if (file.exists()){
-            val lines = file.readLines()
-            val regex = Regex("u: (.+?) / p: (.+)")
-            for (line in lines){
-                val matchResult = regex.find(line)
-                if (matchResult != null) {
-                    val (storedUsername, storedPassword, storedfName, storedlName, storedEmail) = matchResult.destructured
-                    if (storedUsername == username && storedPassword == password) {
-                        return true
-                    }
-                }
-            }
-        }
-        return false
-    }
 
 
 
 
 
-
-    fun updateUser(username: String, password: String, firstName: String, lastName: String, email: String): Boolean{
-
-
-
-        return true
-    }
 
 
 
