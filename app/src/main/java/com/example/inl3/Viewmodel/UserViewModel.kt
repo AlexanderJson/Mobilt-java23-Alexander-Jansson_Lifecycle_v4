@@ -13,7 +13,11 @@ class UserViewModel(private val userService: UserService) : ViewModel() {
 
  // "container" som håller all data, uppdaterar UI vid förändring
  val userData: MutableLiveData<User?> = MutableLiveData()
- val loggedInUser: MutableLiveData<Boolean> = MutableLiveData()
+
+    fun authorizeUser(username: String, password: String): LiveData<Boolean> = liveData {
+        val isAuthorized = userService.authorizeUser(username, password)
+        emit(isAuthorized)
+    }
 
     // fyller userData med hämtad data (för lista)
     fun getUser() {
@@ -38,9 +42,6 @@ class UserViewModel(private val userService: UserService) : ViewModel() {
         }
     }
 
-    fun authorizeUser(username: String, password: String): LiveData<Boolean> = liveData {
-            val isAuthorized = userService.authorizeUser(username, password)
-            emit(isAuthorized)
-    }
+
 
 }

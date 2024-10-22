@@ -15,9 +15,7 @@ import com.example.inl3.R
 import com.example.inl3.UserAdapter
 import com.example.inl3.Viewmodel.UserViewModel
 import com.example.inl3.Viewmodel.UserViewModelFactory
-import com.example.inl3.db_logic.User
 import com.example.inl3.db_logic.UserService
-import com.google.android.ads.mediationtestsuite.viewmodels.ViewModelFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProfileActivity : AppCompatActivity() {
@@ -51,6 +49,7 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
 
+        userViewModel.getUser()
 
 
         val updateBtn = findViewById<Button>(R.id.updateBtn)

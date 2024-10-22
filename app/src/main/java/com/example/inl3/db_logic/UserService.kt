@@ -18,7 +18,7 @@ class UserService( private val context : Context) {
 
             val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
             val savedUsername = sharedPreferences.getString("username", null)
-            Log.d("UserService", "User saved in preferences: $savedUsername")
+            Log.d("Preferences: UserService", "User saved in preferences: $savedUsername")
             getUser()
 
         }
