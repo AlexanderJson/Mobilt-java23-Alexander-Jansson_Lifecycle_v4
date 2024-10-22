@@ -7,34 +7,58 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.inl3.Activities.MainActivity
 import com.example.inl3.R
+import com.example.inl3.Viewmodel.UserViewModel
+import com.example.inl3.Viewmodel.UserViewModelFactory
 import com.example.inl3.db_logic.User
 import com.example.inl3.db_logic.UserService
 
 class LoginFragment : Fragment() {
+    private lateinit var userViewModel: UserViewModel
 
-    private lateinit var userService: UserService
+
+    private lateinit var rootView: View
+    private lateinit var username: EditText
+    private lateinit var password: EditText
+    private lateinit var email: EditText
+    private lateinit var firstName: EditText
+    private lateinit var lastName: EditText
+    private lateinit var loginBtn: Button
+    private lateinit var registerBtn: Button
+
+
 
      override fun onCreateView(
          inflater: LayoutInflater,
          container: ViewGroup?,
          savedInstanceState: Bundle?
 
-     ): View? {
+     ): View {
+         // view
+         rootView = inflater.inflate(R.layout.fragment_login, container, false)
 
-         val view = inflater.inflate(R.layout.fragment_login, container, false)
-         val username = view.findViewById<EditText>(R.id.username)
-         val password = view.findViewById<EditText>(R.id.password)
-         val email = view.findViewById<EditText>(R.id.email)
-         val firstName = view.findViewById<EditText>(R.id.firstName)
-         val lastName = view.findViewById<EditText>(R.id.lName)
-         userService = UserService(requireContext())
+         val userService = UserService(requireContext())
 
-         val loginBtn = view.findViewById<Button>(R.id.loginBtn)
+         val factory = UserViewModelFactory(userService)
+         userViewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
+
+
+         // UI
+         username = rootView.findViewById(R.id.username)
+         password = rootView.findViewById(R.id.password)
+         email = rootView.findViewById(R.id.email)
+         firstName = rootView.findViewById(R.id.firstName)
+         lastName = rootView.findViewById(R.id.lName)
+
+         loginBtn = rootView.findViewById(R.id.loginBtn)
+         registerBtn = rootView.findViewById(R.id.registerBtn)
 
          loginBtn.setOnClickListener {
              // fil auth method
@@ -42,7 +66,7 @@ class LoginFragment : Fragment() {
 
          }
 
-         val registerBtn = view.findViewById<Button>(R.id.registerBtn)
+         val registerBtn = rootView.findViewById<Button>(R.id.registerBtn)
          registerBtn.setOnClickListener {
 
              val user = User(
@@ -52,27 +76,27 @@ class LoginFragment : Fragment() {
                  lastName = lastName.text.toString(),
                  email = email.text.toString()
              )
-             userService.addUser(user)
+             userViewModel.addUser(user)
          }
 
-         return view
+         return rootView
 
      }
 
 
 
-      private fun checkAuth(usernameInput: String, passwordInput: String): Boolean {
+      private fun checkAuth(usernameInput: String, passwordInput: String) {
 
-         val service = UserService(requireContext())
-         val auth = service.authorizeUser(usernameInput, passwordInput)
+         //val auth = userViewModel.authorizeUser(usernameInput, passwordInput)
+        userViewModel.authorizeUser(usernameInput, passwordInput).observe(viewLifecycleOwner) { loggedIn ->
 
-         if (auth) {
+         if (loggedIn) {
              val intent = Intent(requireContext(), MainActivity::class.java)
              startActivity(intent)
-             return true
          }
-         return false
+            else {
+                Toast.makeText(requireContext(), "Invalid log in", Toast.LENGTH_SHORT).show()
+            }
      }
-
-
+      }
 }

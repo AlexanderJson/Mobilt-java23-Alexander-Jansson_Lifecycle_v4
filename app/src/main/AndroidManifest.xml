@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Inl3"
         tools:targetApi="31">
         <activity
-            android:name=".Security.Authorization.AuthActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,11 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.MainActivity">
-        </activity>
 
-        <activity android:name=".Activities.ProfileActivity">
-        </activity>
+
     </application>
 
 </manifest>

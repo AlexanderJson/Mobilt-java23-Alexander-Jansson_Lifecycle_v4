@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.inl3.db_logic.User
 
-class UserAdapter(private val userList: List<User>) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter(private var userList: MutableList<User>) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -34,5 +34,25 @@ class UserAdapter(private val userList: List<User>) : RecyclerView.Adapter<UserA
         holder.email.text = user.email
         holder.fName.text = user.firstName
         holder.lName.text = user.lastName
+    }
+
+    fun updateUsers(newUsers: List<User>) {
+
+        for (i in newUsers.indices) {
+            if (i >= userList.size) {
+                userList.add(newUsers[i])
+                notifyItemInserted(i)
+            } else {
+                userList[i] = newUsers[i]
+                notifyItemChanged(i)
+            }
+        }
+        if (userList.size > newUsers.size) {
+            val removedUsers = userList.size - newUsers.size
+            for (i in 0 until removedUsers) {
+                userList.removeAt(userList.size - 1)
+                notifyItemRemoved(userList.size)
+            }
+        }
     }
 }

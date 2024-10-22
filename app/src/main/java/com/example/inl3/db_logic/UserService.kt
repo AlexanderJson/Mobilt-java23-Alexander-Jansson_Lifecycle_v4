@@ -2,13 +2,15 @@ package com.example.inl3.db_logic
 
 import android.content.Context
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class UserService( private val context : Context) {
 
 
     private val userRepo = UserRepo(context)
 
-    fun authorizeUser(username: String, password: String): Boolean
+    suspend fun authorizeUser(username: String, password: String): Boolean = withContext(Dispatchers.IO)
     {   val user = userRepo.findByUsername(username)
         if (user != null && user.password == password) {
             userRepo.saveUser(username)
@@ -20,12 +22,12 @@ class UserService( private val context : Context) {
             getUser()
 
         }
-        return user != null
+        return@withContext user != null
     }
 
 
 
-    fun getUser(): User? {
+    suspend fun getUser(): User? = withContext(Dispatchers.IO) {
 
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
 
@@ -35,19 +37,19 @@ class UserService( private val context : Context) {
             Log.d("UserService", "User details: Username = ${user.username}, Password = ${user.password}, First Name = ${user.firstName}, Last Name = ${user.lastName}, Email = ${user.email}")
         }
 
-        return user
+        return@withContext user
     }
 
 
     fun loginUser(){}
     fun logoutUser(){}
 
-    fun addUser(newUser:  User){
+    suspend fun addUser(newUser:  User) = withContext(Dispatchers.IO) {
         userRepo.addUser(newUser)
     }
 
 
-    fun updateUser(user: User){
+    suspend fun updateUser(user: User) = withContext(Dispatchers.IO) {
         println("SERVICE UPDATE STARTED")
         userRepo.updateUser(user)
     }

@@ -7,37 +7,51 @@ import android.widget.Button
 import android.widget.FrameLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.inl3.Fragments.EditUserFragment
 import com.example.inl3.R
 import com.example.inl3.UserAdapter
+import com.example.inl3.Viewmodel.UserViewModel
+import com.example.inl3.Viewmodel.UserViewModelFactory
 import com.example.inl3.db_logic.User
 import com.example.inl3.db_logic.UserService
+import com.google.android.ads.mediationtestsuite.viewmodels.ViewModelFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var userServices: UserService
+    private lateinit var userViewModel: UserViewModel
+    private lateinit var userAdapter: UserAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_profile)
 
-        userServices = UserService(this)
-        val user = userServices.getUser()
 
+        userServices = UserService(this)
+
+
+        val factory = UserViewModelFactory(userServices)
+        userViewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
 
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        if (user != null) {
-            val userList = listOf(user)
-            val adapter = UserAdapter(userList)
-            recyclerView.adapter = adapter
+        userAdapter = UserAdapter(mutableListOf())
+        recyclerView.adapter = userAdapter
+
+        userViewModel.userData.observe(this) { user ->
+            user?.let {
+                userAdapter.updateUsers(listOf(it))
+            }
         }
+
+
 
         val updateBtn = findViewById<Button>(R.id.updateBtn)
         updateBtn.setOnClickListener {
