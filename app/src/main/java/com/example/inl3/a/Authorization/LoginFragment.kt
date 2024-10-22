@@ -1,4 +1,4 @@
-package com.example.inl3.Security.Authorization
+package com.example.inl3.a.Authorization
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,12 +10,12 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.inl3.Activities.MainActivity
+import com.example.inl3.MainActivity
 import com.example.inl3.R
-import com.example.inl3.Viewmodel.UserViewModel
-import com.example.inl3.Viewmodel.UserViewModelFactory
-import com.example.inl3.db_logic.User
-import com.example.inl3.db_logic.UserService
+import com.example.inl3.UserViewModel
+import com.example.inl3.UserViewModelFactory
+import com.example.inl3.Model.User
+import com.example.inl3.Service.UserService
 class LoginFragment : Fragment() {
     private lateinit var userViewModel: UserViewModel
 
@@ -64,7 +64,9 @@ class LoginFragment : Fragment() {
 
         val registerBtn = rootView.findViewById<Button>(R.id.registerBtn)
         registerBtn.setOnClickListener {
-
+            userService.getPreferences()
+            userService.clearPreferences()
+            userService.getPreferences()
             val user = User(
                 username = username.text.toString(),
                 password = password.text.toString(),

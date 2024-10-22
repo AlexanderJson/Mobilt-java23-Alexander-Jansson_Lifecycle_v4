@@ -1,7 +1,9 @@
-package com.example.inl3.db_logic
+package com.example.inl3.Service
 
 import android.content.Context
 import android.util.Log
+import com.example.inl3.Model.User
+import com.example.inl3.a.Repository.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -14,18 +16,21 @@ class UserService( private val context : Context) {
     {   val user = userRepo.findByUsername(username)
         if (user != null && user.password == password) {
             userRepo.saveUser(username)
-
-
-            val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-            val savedUsername = sharedPreferences.getString("username", null)
-            Log.d("Preferences: UserService", "User saved in preferences: $savedUsername")
             getUser()
-
         }
         return@withContext user != null
     }
 
+    fun getPreferences(){
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", null)
+        Log.d("UserService", "User details: Username = $username")
+    }
 
+    fun clearPreferences(){
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
+    }
 
     suspend fun getUser(): User? = withContext(Dispatchers.IO) {
 
@@ -44,14 +49,15 @@ class UserService( private val context : Context) {
     fun loginUser(){}
     fun logoutUser(){}
 
-    suspend fun addUser(newUser:  User) = withContext(Dispatchers.IO) {
+
+    suspend fun addUser(newUser: User) = withContext(Dispatchers.IO) {
         userRepo.addUser(newUser)
     }
 
 
     suspend fun updateUser(user: User) = withContext(Dispatchers.IO) {
-        println("SERVICE UPDATE STARTED")
         userRepo.updateUser(user)
+        userRepo.saveUser(user.username)
     }
 
     fun deleteUser(){}

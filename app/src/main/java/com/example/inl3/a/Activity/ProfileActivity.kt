@@ -1,4 +1,4 @@
-package com.example.inl3.Activities
+package com.example.inl3.a.Activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,12 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.inl3.Fragments.EditUserFragment
+import com.example.inl3.MainActivity
+import com.example.inl3.UpdateForm.EditUserFragment
 import com.example.inl3.R
-import com.example.inl3.UserAdapter
-import com.example.inl3.Viewmodel.UserViewModel
-import com.example.inl3.Viewmodel.UserViewModelFactory
-import com.example.inl3.db_logic.UserService
+import com.example.inl3.RecyclerView.UserAdapter
+import com.example.inl3.UserViewModel
+import com.example.inl3.UserViewModelFactory
+import com.example.inl3.Service.UserService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProfileActivity : AppCompatActivity() {
@@ -46,6 +47,7 @@ class ProfileActivity : AppCompatActivity() {
         userViewModel.userData.observe(this) { user ->
             user?.let {
                 userAdapter.updateUsers(listOf(it))
+                userViewModel.updateUser(user)
             }
         }
 

@@ -1,6 +1,7 @@
-package com.example.inl3.db_logic
+package com.example.inl3.a.Repository
 
 import android.content.Context
+import com.example.inl3.Model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -10,7 +11,6 @@ class UserRepo(private val context: Context) {
 
     suspend fun updateUser(updatedUser: User): Boolean = withContext(Dispatchers.IO) {
         val file = File(context.filesDir, "database.txt")
-        println("UPDATE REPO: REPOSITORY UPDATE STARTED")
 
         if (!file.exists()) {
             println("File does not exist.")
@@ -19,7 +19,7 @@ class UserRepo(private val context: Context) {
 
         try {
             val lines = file.readLines().toMutableList()
-            val regex = Regex("u: (.+?) / p: (.+?) / fn: (.+?) / ln: (.+?) / e: (.+)")
+            val regex = Regex("u: (.+?) / p: (.+?) / fn: (.+?) / ln: (.+?) / e: (.+?)")
             var updated = false
             for (i in lines.indices) {
                 val match = regex.find(lines[i])
@@ -76,6 +76,7 @@ class UserRepo(private val context: Context) {
                 val matchResult = regex.find(line)
                 if (matchResult != null) {
                     val (storedUsername, storedPassword, storedfName, storedlName, storedEmail) = matchResult.destructured
+                    println("Findby: Checking username: [$storedUsername] against [$username]")
                     if (storedUsername == username) {
                         return@withContext User(
                             storedUsername,
@@ -127,12 +128,12 @@ class UserRepo(private val context: Context) {
            val file = File(context.filesDir, "database.txt")
            val lines = file.readLines()
 
-           val regex = Regex("u: (.+?) / p: (.+?) / fn: (.+?) / ln: (.+?) / e: (.+)")
+           val regex = Regex("u: (.+?) / p: (.+?) / fn: (.+?) / ln: (.+?) / e: (.+?)")
            for (line in lines) {
                val matchResult = regex.find(line)
                if (matchResult != null) {
                    val (storedUsername, storedPassword, storedfName, storedlName, storedEmail) = matchResult.destructured
-                   println("Findby: Checking username: [$storedUsername] against [$username]")
+                   println("Findbykjkjk: Checking username: [$storedUsername] against [$username]")
 
                    if (storedUsername == username) {
                        return@withContext User(storedUsername, storedPassword, storedfName, storedlName, storedEmail)

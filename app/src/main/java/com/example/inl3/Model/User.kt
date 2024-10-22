@@ -1,4 +1,4 @@
-package com.example.inl3.db_logic
+package com.example.inl3.Model
 
 data class User (
     val username: String,

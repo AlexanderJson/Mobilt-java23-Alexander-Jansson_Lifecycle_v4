@@ -1,10 +1,10 @@
-package com.example.inl3.Activities
+package com.example.inl3
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.inl3.R
+import com.example.inl3.a.Activity.ProfileActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -17,13 +17,11 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.homeFragment -> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
+                    // Hämta RecyclerViewFragment
                     true
                 }
                 R.id.profileFragment -> {
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    startActivity(intent)
+                    // hämta EditUserFragment
                     true
                 }
                 else -> false

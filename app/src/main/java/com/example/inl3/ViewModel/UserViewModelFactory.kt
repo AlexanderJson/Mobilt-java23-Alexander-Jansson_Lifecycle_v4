@@ -1,8 +1,8 @@
-package com.example.inl3.Viewmodel
+package com.example.inl3.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.inl3.db_logic.UserService
+import com.example.inl3.Service.UserService
 
 class UserViewModelFactory(private val userService: UserService) : ViewModelProvider.Factory {
 
