@@ -10,4 +10,6 @@
     <string name="first_name">First name:</string>
     <string name="last_name">Last Name:</string>
     <string name="Edit">Edit profile</string>
+    <string name="Your_details">Your details</string>
+    <string name="Edit_details">Edit details</string>
 </resources>

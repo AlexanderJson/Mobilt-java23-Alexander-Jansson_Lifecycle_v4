@@ -12,6 +12,12 @@ class UserService(private val context: Context, private val userRepo: UserReposi
 
 
 
+    fun logoutUser(){
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
+        Log.d("LOGOUT", "User logged out")
+    }
+
     private fun saveUser(username: String){
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().putString("username", username).apply()
