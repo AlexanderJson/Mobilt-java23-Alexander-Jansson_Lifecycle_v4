@@ -118,36 +118,36 @@ class UserRepository(private val context: Context) {
     }
 
     // lägger till användare
-     fun registerUser(context: Context, newUser: User){
-        val jsonString = readJson(context)
-        val usersArray = if (jsonString.isNotEmpty()) {
-            JSONArray(jsonString)
-        } else {
-            JSONArray()
-        }
-
-        for (i in 0 until usersArray.length()){
-            val userObject = usersArray.getJSONObject(i)
-            val existingUsername = userObject.getString("username").lowercase(Locale.getDefault())
-
-            if (existingUsername == newUser.username){
-                Toast.makeText(context, "User already exists", Toast.LENGTH_SHORT).show()
-                return
+    suspend fun registerUser(context: Context, newUser: User): Boolean {
+        return withContext(Dispatchers.IO) {
+            val jsonString = readJson(context)
+            val usersArray = if (jsonString.isNotEmpty()) {
+                JSONArray(jsonString)
+            } else {
+                JSONArray()
             }
+
+            for (i in 0 until usersArray.length()) {
+                val userObject = usersArray.getJSONObject(i)
+                val existingUsername =
+                    userObject.getString("username").lowercase(Locale.getDefault())
+
+                if (existingUsername == newUser.username) {
+                    return@withContext false
+                }
+            }
+
+            val newUserObject = JSONObject()
+            newUserObject.put("username", newUser.username)
+            newUserObject.put("password", newUser.password)
+            newUserObject.put("firstName", newUser.firstName)
+            newUserObject.put("lastName", newUser.lastName)
+            newUserObject.put("email", newUser.email)
+            usersArray.put(newUserObject)
+
+            writeJson(context, usersArray.toString())
+
+            return@withContext true
         }
-
-        val newUserObject = JSONObject()
-        newUserObject.put("username", newUser.username)
-        newUserObject.put("password", newUser.password)
-        newUserObject.put("firstName", newUser.firstName)
-        newUserObject.put("lastName", newUser.lastName)
-        newUserObject.put("email", newUser.email)
-        usersArray.put(newUserObject)
-
-        writeJson(context, usersArray.toString())
-        Toast.makeText(context, "User ${newUser.username} added!", Toast.LENGTH_SHORT).show()
-
     }
-
-
 }

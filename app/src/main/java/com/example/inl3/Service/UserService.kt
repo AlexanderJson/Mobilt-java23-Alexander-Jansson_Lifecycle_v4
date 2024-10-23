@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.example.inl3.Model.User
 import com.example.inl3.Repository.UserRepository
-import com.example.inl3.a.Repository.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -35,8 +34,8 @@ suspend fun updateUser(updatedUser: User){
         return usernameInput?.let { userRepo.getUser(context, it) }
     }
 
-    fun registerUser(context: Context, newUser: User){
-        userRepo.registerUser(context, newUser)
+    suspend fun registerUser(context: Context, newUser: User): Boolean {
+      return userRepo.registerUser(context, newUser)
     }
 
     fun getAllUsers(context: Context): List<User> {

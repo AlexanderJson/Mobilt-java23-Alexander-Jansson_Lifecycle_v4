@@ -1,4 +1,4 @@
-package com.example.inl3
+package com.example.inl3.UI.ViewUsers
 
 
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.inl3.R
 import com.example.inl3.RecyclerView.UserAdapter
 import com.example.inl3.Repository.UserRepository
 import com.example.inl3.Service.UserService
@@ -50,13 +51,6 @@ class ViewUserFragment : Fragment() {
 
             userViewModel.getUser(requireContext())
 
-//        val user = MutableList<User> = mutableListOf(
-//            User()
-////        )
-////
-////
-////        val adapter = UserAdapter(user)
-//        recyclerView.adapter = adapter
 
         return view
     }

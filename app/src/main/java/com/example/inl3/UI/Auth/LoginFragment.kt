@@ -1,4 +1,4 @@
-package com.example.inl3
+package com.example.inl3.UI.Auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,12 +10,12 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.inl3.Model.User
+import com.example.inl3.R
 import com.example.inl3.Repository.UserRepository
 import com.example.inl3.Service.UserService
+import com.example.inl3.UI.MainActivity
 import com.example.inl3.ViewModel.UserViewModel
 import com.example.inl3.ViewModel.UserViewModelFactory
-import com.example.inl3.a.Repository.UserRepo
 
 class LoginFragment : Fragment() {
 

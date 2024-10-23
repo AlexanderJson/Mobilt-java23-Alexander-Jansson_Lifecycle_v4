@@ -1,4 +1,4 @@
-package com.example.inl3.UpdateForm
+package com.example.inl3.UI.EditUsers
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.inl3.Model.User
@@ -74,6 +75,7 @@ class EditUserFragment : Fragment() {
                 emailEdit.text.toString()
             )
             userViewModel.updateUser(updatedUser)
+            Toast.makeText(context, "User updated", Toast.LENGTH_SHORT).show()
         }
 
 

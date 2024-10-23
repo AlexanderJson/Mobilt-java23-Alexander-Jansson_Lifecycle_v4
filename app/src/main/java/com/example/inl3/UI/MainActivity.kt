@@ -1,13 +1,17 @@
-package com.example.inl3
+package com.example.inl3.UI
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.inl3.UI.Auth.AuthActivity
+import com.example.inl3.UI.Homepage.HomeFragment
+import com.example.inl3.R
 import com.example.inl3.Repository.UserRepository
 import com.example.inl3.Service.UserService
-import com.example.inl3.UpdateForm.EditUserFragment
+import com.example.inl3.UI.EditUsers.EditUserFragment
+import com.example.inl3.UI.ViewUsers.ViewUserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {

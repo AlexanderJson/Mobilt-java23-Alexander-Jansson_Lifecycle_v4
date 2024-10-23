@@ -18,6 +18,16 @@ class UserViewModel(private val userService: UserService) : ViewModel() {
  val userLiveData: LiveData<User?> = userData
 
 
+    fun registerUser(context: Context, newUser: User) {
+        viewModelScope.launch {
+                val isRegistered = userService.registerUser(context, newUser)
+                if (isRegistered) {
+                    val registeredUser = userService.getUser()?.firstOrNull()
+                    userData.postValue(registeredUser)
+            }
+        }
+    }
+
  // hämtar en användare från shared prefs, uppdaterar userData
  fun getUser(context: Context) {
   viewModelScope.launch {
@@ -55,29 +65,3 @@ class UserViewModel(private val userService: UserService) : ViewModel() {
 
 
 
-//    fun authorizeUser(username: String, password: String): LiveData<Boolean> = liveData {
-//        val isAuthorized = userService.authorizeUser(username, password)
-//        emit(isAuthorized)
-//    }
-//
-//    // fyller userData med hämtad data (för lista)
-//    fun getUser() {
-//        viewModelScope.launch {
-//            val user = userService.getUser()
-//            userData.postValue(user)
-//        }
-//    }
-//
-//    // uppdaterar UI med ny data (för lista + update logik)
-//    fun updateUser(user: User) {
-//        viewModelScope.launch {
-//            userService.updateUser(user)
-//            getUser()
-//        }
-//    }
-//
-//    fun addUser(user: User) {
-//        viewModelScope.launch {
-//            userService.addUser(user)
-//        }
-//    }

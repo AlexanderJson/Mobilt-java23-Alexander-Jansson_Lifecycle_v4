@@ -1,15 +1,10 @@
-package com.example.inl3
+package com.example.inl3.UI.Auth
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.inl3.RecyclerView.RegisterUserFragment
-import com.example.inl3.UpdateForm.EditUserFragment
+import com.example.inl3.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

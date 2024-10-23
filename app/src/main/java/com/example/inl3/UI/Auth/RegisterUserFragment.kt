@@ -1,6 +1,5 @@
-package com.example.inl3.RecyclerView
+package com.example.inl3.UI.Auth
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.inl3.MainActivity
 import com.example.inl3.Model.User
 import com.example.inl3.R
 import com.example.inl3.Repository.UserRepository
@@ -65,9 +63,18 @@ class RegisterUserFragment : Fragment() {
                 lastName = lastName.text.toString(),
                 email = email.text.toString()
             )
-            if(user.username.isNotEmpty() && user.password.isNotEmpty()){
-                userService.registerUser(requireContext(), user)
-            }else{
+            if (user.username.isNotEmpty() && user.password.isNotEmpty()) {
+                userViewModel.registerUser(requireContext(), user)
+
+                userViewModel.userLiveData.observe(viewLifecycleOwner) { registeredUser ->
+                    registeredUser?.let {
+                        Toast.makeText(requireContext(), "User registered", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+
+            else {
                 Toast.makeText(requireContext(), "Please fill in username and password", Toast.LENGTH_SHORT).show()
             }
         }
