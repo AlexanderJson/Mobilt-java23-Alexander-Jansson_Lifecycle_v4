@@ -16,6 +16,7 @@ suspend fun updateUser(updatedUser: User){
 }
 
 
+
     fun logoutUser(){
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().clear().apply()

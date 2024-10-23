@@ -65,7 +65,11 @@ class RegisterUserFragment : Fragment() {
                 lastName = lastName.text.toString(),
                 email = email.text.toString()
             )
-            userService.registerUser(requireContext(), user)
+            if(user.username.isNotEmpty() && user.password.isNotEmpty()){
+                userService.registerUser(requireContext(), user)
+            }else{
+                Toast.makeText(requireContext(), "Please fill in username and password", Toast.LENGTH_SHORT).show()
+            }
         }
 
         return rootView

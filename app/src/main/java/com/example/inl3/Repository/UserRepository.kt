@@ -9,6 +9,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Locale
 
 class UserRepository(private val context: Context) {
 
@@ -124,14 +125,25 @@ class UserRepository(private val context: Context) {
         } else {
             JSONArray()
         }
+
+        for (i in 0 until usersArray.length()){
+            val userObject = usersArray.getJSONObject(i)
+            val existingUsername = userObject.getString("username").lowercase(Locale.getDefault())
+
+            if (existingUsername == newUser.username){
+                Toast.makeText(context, "User already exists", Toast.LENGTH_SHORT).show()
+                return
+            }
+        }
+
         val newUserObject = JSONObject()
         newUserObject.put("username", newUser.username)
         newUserObject.put("password", newUser.password)
         newUserObject.put("firstName", newUser.firstName)
         newUserObject.put("lastName", newUser.lastName)
         newUserObject.put("email", newUser.email)
-
         usersArray.put(newUserObject)
+
         writeJson(context, usersArray.toString())
         Toast.makeText(context, "User ${newUser.username} added!", Toast.LENGTH_SHORT).show()
 

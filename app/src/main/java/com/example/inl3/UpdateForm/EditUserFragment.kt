@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.inl3.Model.User
@@ -24,7 +25,7 @@ class EditUserFragment : Fragment() {
     private lateinit var adapter: UserAdapter
 
     // input
-    private lateinit var usernameEdit: EditText
+    private lateinit var usernameText: TextView
     private lateinit var passwordEdit: EditText
     private lateinit var emailEdit: EditText
     private lateinit var firstNameEdit: EditText
@@ -46,15 +47,16 @@ class EditUserFragment : Fragment() {
         val factory = UserViewModelFactory(userServices)
         userViewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
 
+        usernameText = view.findViewById(R.id.username)
         passwordEdit = view.findViewById(R.id.password)
         emailEdit = view.findViewById(R.id.email)
         firstNameEdit = view.findViewById(R.id.firstName)
         lastNameEdit = view.findViewById(R.id.lName)
 
-
-
+        userViewModel.getUser(requireContext())
         userViewModel.userLiveData.observe(viewLifecycleOwner) { user ->
             user?.let {
+                usernameText.text = it.username
                 passwordEdit.setText(it.password)
                 emailEdit.setText(it.email)
                 firstNameEdit.setText(it.firstName)
@@ -65,6 +67,7 @@ class EditUserFragment : Fragment() {
         val updateButton = view.findViewById<Button>(R.id.editBtn)
         updateButton.setOnClickListener {
             val updatedUser = User(
+                usernameText.text.toString(),
                 passwordEdit.text.toString(),
                 firstNameEdit.text.toString(),
                 lastNameEdit.text.toString(),
