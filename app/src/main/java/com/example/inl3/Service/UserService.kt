@@ -8,10 +8,21 @@ import com.example.inl3.a.Repository.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class UserService( private val context : Context) {
+class UserService(private val context: Context, private val userRepo: UserRepository) {
 
 
-    private val userRepo = UserRepository(context)
+
+    private fun saveUser(username: String){
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString("username", username).apply()
+        Log.d("SAVING USER: LOGIN", "User: $username")
+    }
+
+    suspend fun getUser(context: Context): List<User>? {
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val usernameInput = sharedPreferences.getString("username", null)
+        return usernameInput?.let { userRepo.getUser(context, it) }
+    }
 
     fun registerUser(context: Context, newUser: User){
         userRepo.registerUser(context, newUser)
@@ -27,11 +38,13 @@ class UserService( private val context : Context) {
         for (user in userList){
             // kolla lösenord
             if (user.password == passwordInput){
+                saveUser(usernameInput)
                 return true
             }
         }
         return false
     }
+
 }
 
 

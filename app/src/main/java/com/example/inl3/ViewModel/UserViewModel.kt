@@ -1,5 +1,7 @@
 package com.example.inl3.ViewModel
 
+import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,8 +12,19 @@ import kotlinx.coroutines.launch
 class UserViewModel(private val userService: UserService) : ViewModel() {
 
  // "container" som håller all data, uppdaterar UI vid förändring
- val userData: MutableLiveData<User?> = MutableLiveData()
+ private val userData = MutableLiveData<User?>()
 
+ // listener för all data inuti userData
+ val userLiveData: LiveData<User?> = userData
+
+
+ // hämtar en användare från shared prefs, uppdaterar userData
+ fun getUser(context: Context) {
+  viewModelScope.launch {
+   val user = userService.getUser(context)?.firstOrNull()
+   userData.postValue(user)
+  }
+ }
 
  fun authorizeUser(username: String, password: String, onResult: (Boolean) -> Unit){
   // VMScope håller reda på livscyceln av viewmodeln och stoppar coroutines

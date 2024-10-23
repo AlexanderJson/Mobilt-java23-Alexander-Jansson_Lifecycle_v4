@@ -2,14 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+        <item
+            android:id="@+id/nav_example"
+            android:icon="@drawable/baseline_logout_24"
+            android:title="Example" />
+
+
+
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/nav_view_users"
         android:title="@string/home"
         android:icon="@drawable/baseline_home_24"
         />
 
     <item
-        android:id="@+id/profileFragment"
+        android:id="@+id/nav_edit_users"
         android:title="@string/profile"
         android:icon="@drawable/baseline_person_24"
         />

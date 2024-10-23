@@ -22,15 +22,11 @@ class UserAdapter(private var userList: MutableList<User>) : RecyclerView.Adapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
-        Log.d("UserAdapter", "onCreateViewHolder called")
-
         return UserViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        Log.d("UserAdapter", "getItemCount called: ${userList.size}")
-
-        return userList.size
+      return userList.size
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
@@ -42,6 +38,14 @@ class UserAdapter(private var userList: MutableList<User>) : RecyclerView.Adapte
         holder.fName.text = user.firstName
         holder.lName.text = user.lastName
     }
+
+    fun newUsers(newUsers: List<User>) {
+        userList.clear()
+        userList.addAll(newUsers)
+        notifyDataSetChanged()
+    }
+
+
 
     fun updateUsers(newUsers: List<User>) {
 

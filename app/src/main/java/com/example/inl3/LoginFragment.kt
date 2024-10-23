@@ -11,14 +11,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.inl3.Model.User
+import com.example.inl3.Repository.UserRepository
 import com.example.inl3.Service.UserService
 import com.example.inl3.ViewModel.UserViewModel
 import com.example.inl3.ViewModel.UserViewModelFactory
+import com.example.inl3.a.Repository.UserRepo
 
 class LoginFragment : Fragment() {
 
     private lateinit var rootView: View
     private lateinit var userService: UserService
+    private lateinit var userRepo: UserRepository
+    private lateinit var userViewModel: UserViewModel
     private lateinit var username: EditText
     private lateinit var password: EditText
     private lateinit var email: EditText
@@ -26,7 +30,6 @@ class LoginFragment : Fragment() {
     private lateinit var lastName: EditText
     private lateinit var loginBtn: Button
 
-    private lateinit var userViewModel: UserViewModel
 
 
     override fun onCreateView(
@@ -38,7 +41,8 @@ class LoginFragment : Fragment() {
         // view
         rootView = inflater.inflate(R.layout.fragment_login, container, false)
 
-        userService = UserService(requireContext())
+        userRepo = UserRepository(requireContext())
+        userService = UserService(requireContext(),userRepo )
 
         val factory = UserViewModelFactory(userService)
         userViewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
