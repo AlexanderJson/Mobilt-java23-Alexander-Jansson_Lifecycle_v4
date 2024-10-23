@@ -11,6 +11,10 @@ import kotlinx.coroutines.withContext
 class UserService(private val context: Context, private val userRepo: UserRepository) {
 
 
+suspend fun updateUser(updatedUser: User){
+    userRepo.updateUser(context, updatedUser)
+}
+
 
     fun logoutUser(){
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
@@ -24,7 +28,7 @@ class UserService(private val context: Context, private val userRepo: UserReposi
         Log.d("SAVING USER: LOGIN", "User: $username")
     }
 
-    suspend fun getUser(context: Context): List<User>? {
+    suspend fun getUser(): List<User>? {
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val usernameInput = sharedPreferences.getString("username", null)
         return usernameInput?.let { userRepo.getUser(context, it) }

@@ -21,10 +21,24 @@ class UserViewModel(private val userService: UserService) : ViewModel() {
  // hämtar en användare från shared prefs, uppdaterar userData
  fun getUser(context: Context) {
   viewModelScope.launch {
-   val user = userService.getUser(context)?.firstOrNull()
+   val user = userService.getUser()?.firstOrNull()
    userData.postValue(user)
   }
  }
+
+     fun updateUser(updatedUser: User) {
+        viewModelScope.launch {
+           userService.updateUser(updatedUser)
+
+            val updatedUserList = userService.getUser()
+            updatedUserList?.let {
+                if(it.isNotEmpty()) {
+                    userData.postValue(it[0])
+                }
+            }
+
+        }
+    }
 
  fun authorizeUser(username: String, password: String, onResult: (Boolean) -> Unit){
   // VMScope håller reda på livscyceln av viewmodeln och stoppar coroutines

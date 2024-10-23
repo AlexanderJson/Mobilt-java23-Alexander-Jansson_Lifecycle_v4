@@ -1,5 +1,6 @@
 package com.example.inl3.RecyclerView
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +40,7 @@ class UserAdapter(private var userList: MutableList<User>) : RecyclerView.Adapte
         holder.lName.text = user.lastName
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun newUsers(newUsers: List<User>) {
         userList.clear()
         userList.addAll(newUsers)

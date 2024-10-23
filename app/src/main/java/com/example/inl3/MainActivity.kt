@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.inl3.Repository.UserRepository
 import com.example.inl3.Service.UserService
+import com.example.inl3.UpdateForm.EditUserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -34,8 +35,8 @@ class MainActivity : AppCompatActivity() {
                     loadFragment(ViewUserFragment())
                     true
                 }
-                R.id.nav_show_users -> {
-                    loadFragment(ViewUserFragment())
+                R.id.nav_edit_users -> {
+                    loadFragment(EditUserFragment())
                     true
                 }
                 R.id.nav_logout -> {

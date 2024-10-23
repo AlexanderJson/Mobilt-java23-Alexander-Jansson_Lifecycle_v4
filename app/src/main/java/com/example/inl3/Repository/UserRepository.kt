@@ -30,6 +30,39 @@ class UserRepository(private val context: Context) {
         }
     }
 
+
+    suspend fun updateUser(context: Context, updatedUser: User){
+        return withContext(Dispatchers.IO) {
+           val existingUserList = getUser(context, updatedUser.username)
+            if (existingUserList.isNotEmpty()) {
+                val jsonString = readJson(context)
+                val usersArray = JSONArray(jsonString)
+
+                for (i in 0 until usersArray.length()){
+                    val userObject = usersArray.getJSONObject(i)
+                    val username = userObject.getString("username")
+                    if (username == updatedUser.username){
+                        userObject.put("password", updatedUser.password)
+                        userObject.put("firstName", updatedUser.firstName)
+                        userObject.put("lastName", updatedUser.lastName)
+                        userObject.put("email", updatedUser.email)
+                        break
+                    }
+                }
+                writeJson(context,usersArray.toString())
+            } else {
+                // skickar TOAST på main thread då det inte bör köras på annan
+                return@withContext withContext(Dispatchers.Main){
+                    Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+    }
+
+
+
+
     // hämtar en användare genom användarnamnet (suspendable)
      suspend fun getUser(context: Context, usernameInput: String): List<User> {
          // använder input/output tråd
