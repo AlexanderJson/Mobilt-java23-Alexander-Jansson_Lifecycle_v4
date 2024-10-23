@@ -12,4 +12,6 @@
     <string name="Edit">Edit profile</string>
     <string name="Your_details">Your details</string>
     <string name="Edit_details">Edit details</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 </resources>

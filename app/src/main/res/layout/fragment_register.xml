@@ -10,6 +10,7 @@
 
     <include layout="@layout/form_layout" />
     <Button
+        android:id="@+id/registerBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

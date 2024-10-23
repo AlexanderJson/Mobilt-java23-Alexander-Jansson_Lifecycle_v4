@@ -25,9 +25,6 @@ class LoginFragment : Fragment() {
     private lateinit var userViewModel: UserViewModel
     private lateinit var username: EditText
     private lateinit var password: EditText
-    private lateinit var email: EditText
-    private lateinit var firstName: EditText
-    private lateinit var lastName: EditText
     private lateinit var loginBtn: Button
 
 
@@ -51,13 +48,9 @@ class LoginFragment : Fragment() {
         // UI
         username = rootView.findViewById(R.id.username)
         password = rootView.findViewById(R.id.password)
-        email = rootView.findViewById(R.id.email)
-        firstName = rootView.findViewById(R.id.firstName)
-        lastName = rootView.findViewById(R.id.lName)
 
         loginBtn = rootView.findViewById(R.id.loginBtn)
 
-        userService.getAllUsers(requireContext())
 
         val loginBtn = rootView.findViewById<Button>(R.id.loginBtn)
         loginBtn.setOnClickListener {
@@ -77,17 +70,6 @@ class LoginFragment : Fragment() {
             }
         }
 
-        val registerBtn = rootView.findViewById<Button>(R.id.registerBtn)
-        registerBtn.setOnClickListener {
-            val user = User(
-                username = username.text.toString(),
-                password = password.text.toString(),
-                firstName = firstName.text.toString(),
-                lastName = lastName.text.toString(),
-                email = email.text.toString()
-            )
-            userService.registerUser(requireContext(), user)
-        }
 
         return rootView
 
